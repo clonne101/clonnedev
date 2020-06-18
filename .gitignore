@@ -1,1 +1,4 @@
 /pgdata
+/jupytersparkdata
+/.vscode
+/.DS_Store

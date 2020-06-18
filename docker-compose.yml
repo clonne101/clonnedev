@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+
+  # Postgres DB
+  postgresdb:
+    image: postgres
+    container_name: main_db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: hAcker101!@
+      POSTGRES_USER: clonne
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - site-network
+
+  # DB Manager
+  adminer:
+    image: adminer
+    container_name: db_manager
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DESIGN: lucas-sandery
+    networks:
+      - site-network
+
+# Docker Networks
+networks:
+  site-network:
+    driver: bridge

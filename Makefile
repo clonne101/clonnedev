@@ -29,10 +29,10 @@ run-build:
 	@echo "=============run docker compose and build============"
 	docker-compose up --build
 
-## script: Boot custom script which boots up standalone docker images
+## script: Boot custom script which installs docker and docker-compose and boots up standalone jupyter image
 script:
-	@echo "=============run custom script which boots up standalone docker images============"
-	sudo chmod +x docker_run.sh && sudo bash docker_run.sh
+	@echo "=============run custom script which installs docker and docker-compose and boots up standalone jupyter image============"
+	sudo chmod +x run.sh && sudo bash run.sh
 
 ## ssh-db-postgres: SSH into container for the db (postgres)
 ssh-db-postgres:

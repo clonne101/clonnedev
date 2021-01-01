@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+
 # GLOBAL VARIABLES
 PACKAGES="docker docker-compose"
 JUPYTERSPARK="jupyterspark"
@@ -7,21 +10,57 @@ JUPYTERSPARK="jupyterspark"
 # SCRIPT METHODS
 #
 # Install docker and docker-compose
-install_docker_entites()
+install_docker()
+{
+  printf "Installing Docker...\n"
+
+  sudo apt remove --yes docker docker-engine docker.io containerd runc
+  sudo apt update
+  sudo apt --yes --no-install-recommends install apt-transport-https ca-certificates
+  wget --quiet --output-document=- https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  sudo add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release --codename --short) stable"
+  sudo apt update
+  sudo apt --yes --no-install-recommends install docker-ce docker-ce-cli containerd.io
+  sudo usermod --append --groups docker "$USER"
+  sudo systemctl enable docker
+
+  printf '\nDocker installed successfully\n\n'
+  printf 'Waiting for Docker to start...\n\n'
+  sleep 5
+}
+install_docker_compose()
+{
+  printf "Installing Docker Compose...\n"
+
+  sudo wget --output-document=/usr/local/bin/docker-compose "https://github.com/docker/compose/releases/download/$(wget --quiet --output-document=- https://api.github.com/repos/docker/compose/releases/latest | grep --perl-regexp --only-matching '"tag_name": "\K.*?(?=")')/run.sh"
+  sudo chmod +x /usr/local/bin/docker-compose
+  sudo wget --output-document=/etc/bash_completion.d/docker-compose "https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/bash/docker-compose"
+  
+  printf '\nDocker Compose installed successfully\n\n'
+}
+install_entites()
 {
   # check if docker is installed
   printf "\nChecking required packages\n"
   for i in $PACKAGES
     do
       if ! which $i > /dev/null; then
-        printf "Kindly install ${i^^} to continue - https://www.docker.com \n"
+        if [ $i == 'docker' ]; then
+          # Docker
+          install_docker
+        elif [ $i == 'docker-compose' ]; then
+          # Docker Compose
+          install_docker_compose
+        else
+          printf "No packages found!\n"
       else
         printf "${i^^} already installed \n"
       fi
   done
 
-  printf "Docker is installed!\n"
+  printf "Docker and Docker-Compose installed!\n"
 }
+
 #Jupyter Spark Edition - Python, R, and Scala support for Apache Spark
 get_jupyterspark_logs()
 {

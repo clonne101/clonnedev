@@ -30,6 +30,7 @@ services:
     environment:
       MYSQL_USER: clonne
       MYSQL_PASSWORD: 93QzUxBjUPsMhRk
+      MYSQL_ROOT_PASSWORD: 54tyUxBjUPsMjn7
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:

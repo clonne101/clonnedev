@@ -1,7 +1,6 @@
-version: '3'
+version: "3"
 
 services:
-
   # Postgres DB
   postgresdb:
     image: postgres
@@ -19,7 +18,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - site-network
-  
+
   # MySQL DB
   mysqldb:
     image: mysql:5.7.22
@@ -27,7 +26,7 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "8806:3306"
+      - "8833:3306"
     environment:
       MYSQL_USER: clonne
       MYSQL_PASSWORD: 93QzUxBjUPsMhRk

@@ -58,9 +58,7 @@ install_entites()
       fi
   done
 
-  printf "Docker and Docker-Compose installed, logging you out in 5s, kindly log back in...\n"
-  sleep 5
-  exit
+  printf "Docker and Docker-Compose installed...\n"
 }
 
 #Jupyter Spark Edition - Python, R, and Scala support for Apache Spark

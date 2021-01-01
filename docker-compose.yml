@@ -35,7 +35,7 @@ services:
     volumes:
       - mysqldata:/var/lib/mysql
     networks:
-      - app-network
+      - site-network
 
   # DB Manager
   adminer:

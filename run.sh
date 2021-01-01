@@ -53,6 +53,7 @@ install_entites()
           install_docker_compose
         else
           printf "No packages found!\n"
+        fi
       else
         printf "${i^^} already installed \n"
       fi

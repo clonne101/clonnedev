@@ -14,7 +14,6 @@ install_docker()
 {
   printf "Installing Docker...\n"
 
-  sudo apt remove --yes docker docker-engine docker.io containerd runc
   sudo apt update
   sudo apt --yes --no-install-recommends install apt-transport-https ca-certificates
   wget --quiet --output-document=- https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -

@@ -11,8 +11,7 @@ down:
 ## clean: Clean up after shutdown and remove all dummy images and volumes
 clean:
 	@echo "=============project cleaning up============="
-	docker system prune -f
-	docker volume prune -f
+	docker system prune -a
 
 ## run: Boot up docker compose containers in daemon mode
 run:

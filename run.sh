@@ -124,7 +124,7 @@ boot_options()
   # run option
   if [ $optionvar -eq 1 ]; then
     printf "\nInstalling docker and docker-compose\n\n"
-    install_docker_entites
+    install_entites
   elif [ $optionvar -eq 2 ]; then
     printf "\nBooting up Jupyter Spark\n\n"
     boot_jupyterspark

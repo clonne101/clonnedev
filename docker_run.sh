@@ -6,6 +6,22 @@ JUPYTERSPARK="jupyterspark"
 
 # SCRIPT METHODS
 #
+# Install docker and docker-compose
+install_docker_entites()
+{
+  # check if docker is installed
+  printf "\nChecking required packages\n"
+  for i in $PACKAGES
+    do
+      if ! which $i > /dev/null; then
+        printf "Kindly install ${i^^} to continue - https://www.docker.com \n"
+      else
+        printf "${i^^} already installed \n"
+      fi
+  done
+
+  printf "Docker is installed!\n"
+}
 #Jupyter Spark Edition - Python, R, and Scala support for Apache Spark
 get_jupyterspark_logs()
 {
@@ -15,20 +31,15 @@ get_jupyterspark_logs()
 }
 boot_jupyterspark()
 {
-  # check if docker is installed
-  printf "\nChecking required packages\n"
-  for i in $PACKAGES
-    do
-      if ! which $i > /dev/null; then
-        printf "Kindly install ${i^^} to continue - https://www.docker.com \n"
-      fi
-  done
+  # inform
+  printf "Creating required directories...\n"
+  mkdir /home/$USER/jupytersparkdata
 
-  # found now proceed
-  printf "Docker is installed, running standalone container now...\n"
+  # inform
+  printf "Running standalone jupyter container now...\n"
 
   # docker command
-  docker run -d --name ${JUPYTERSPARK} -p 8888:8888 -p 4040:4040 -p 4041:4041 -e RESTARTABLE=yes -v /home/clonne/git/dev/jupytersparkdata:/home/jovyan/work jupyter/pyspark-notebook
+  docker run -d --name ${JUPYTERSPARK} -p 8888:8888 -p 4040:4040 -p 4041:4041 -e RESTARTABLE=yes -v /home/$USER/jupytersparkdata:/home/jovyan/work jupyter/pyspark-notebook
 
   # pause
   printf "\nContainer is up, waiting to show access url and token\n"
@@ -61,20 +72,24 @@ shutdown_jupyterspark()
 boot_options()
 {
   read -p "Choose a boot option by number: 
-  1. Jupyter Spark - Start
-  2. Jupyter Spark - Stop & Remove
-  3. Jupyter Spark - Logs
+  1. Install docker and docker-compose
+  2. Jupyter Spark - Start
+  3. Jupyter Spark - Stop & Remove
+  4. Jupyter Spark - Logs
   0. Quit
   " optionvar
 
   # run option
   if [ $optionvar -eq 1 ]; then
+    printf "\nInstalling docker and docker-compose\n\n"
+    install_docker_entites
+  elif [ $optionvar -eq 2 ]; then
     printf "\nBooting up Jupyter Spark\n\n"
     boot_jupyterspark
-  elif [ $optionvar -eq 2 ]; then
+  elif [ $optionvar -eq 3 ]; then
     printf "\nShutting down Jupyter Spark\n\n"
     shutdown_jupyterspark
-  elif [ $optionvar -eq 3 ]; then
+  elif [ $optionvar -eq 4 ]; then
     printf "\View logs for Jupyter Spark\n\n"
     get_jupyterspark_logs
   elif [ $optionvar -eq 0 ]; then

@@ -5,18 +5,38 @@ services:
   # Postgres DB
   postgresdb:
     image: postgres
-    container_name: main_db
+    container_name: postgres_db
     restart: unless-stopped
     tty: true
     ports:
-      - "5432:5432"
+      - "8832:5432"
     environment:
-      POSTGRES_PASSWORD: hAcker101!@
+      POSTGRES_PASSWORD: 93QzUxBjUPsMhRk
       POSTGRES_USER: clonne
+      SERVICE_TAGS: dev
+      SERVICE_NAME: postgres
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     networks:
       - site-network
+  
+  # MySQL DB
+  mysqldb:
+    image: mysql:5.7.22
+    container_name: mysql_db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8806:3306"
+    environment:
+      MYSQL_USER: clonne
+      MYSQL_PASSWORD: 93QzUxBjUPsMhRk
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - app-network
 
   # DB Manager
   adminer:
@@ -25,9 +45,11 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "8080:8080"
+      - "8022:8080"
     environment:
       ADMINER_DESIGN: lucas-sandery
+      SERVICE_TAGS: dev
+      SERVICE_NAME: adminer
     networks:
       - site-network
 
@@ -35,3 +57,10 @@ services:
 networks:
   site-network:
     driver: bridge
+
+#Volumes
+volumes:
+  mysqldata:
+    driver: local
+  pgdata:
+    driver: local

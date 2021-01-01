@@ -37,7 +37,12 @@ script:
 ## ssh-db-postgres: SSH into container for the db (postgres)
 ssh-db-postgres:
 	@echo "=============ssh into container for database(postgres)============"
-	docker-compose exec db bash
+	docker-compose exec postgresdb bash
+
+## ssh-db-mysql: SSH into container for the db (mysql)
+ssh-db-mysql:
+	@echo "=============ssh into container for database(mysql)============"
+	docker-compose exec mysqldb bash
 
 ## ssh-adminer: SSH into container for the adminer
 ssh-adminer:
